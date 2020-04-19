@@ -2,6 +2,7 @@ import React from "react";
 import PropTypes from 'prop-types'
 import {Button} from "../Button";
 import {Files} from "../Files";
+import {TituloMarkdown} from "../TituloMarkdown";
 
 export const MarkdownEditor = (props) => {
 
@@ -14,11 +15,11 @@ export const MarkdownEditor = (props) => {
                 handleOpenFile={handleOpenFile}
             />
             <form>
-                <div className="form-group">
-                    <label htmlFor="title">Título</label>
-                    <input ref={tituloRef} autoFocus type='text' value={title} onChange={(e)=>setTitle(e.target.value)} placeholder="Sem título" name="title" className="form-control" id="title"/>
-                </div>
-
+                <TituloMarkdown
+                    tituloRef={tituloRef}
+                    title={title}
+                    setTitle={setTitle}
+                />
                 <div className="form-group">
                     <label htmlFor="textarea">Conteúdo</label>
                     <textarea ref={textareaRef} value={textarea} onChange={(e) => setTextarea(e.target.value)} name="textarea" className="form-control" id="textarea" rows="5"/>
