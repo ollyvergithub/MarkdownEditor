@@ -25,11 +25,13 @@ const App = () => {
     }, [])
 
     const getFiles = () => {
-        const files = Object.keys(localStorage)
+        const files = JSON.parse(localStorage.getItem('markdown-editor'))
+        setFiles(files)
+        /*const files = Object.keys(localStorage)
         setFiles(files.filter((id) => id.match(/^\w{8}-\w{4}-\w{4}-\w{4}-\w{12}$/)).reduce((acc, fieldId) => ({
             ...acc,
             [fieldId]: JSON.parse(localStorage.getItem(fieldId)),
-        }), {}))
+        }), {}))*/
     }
 
     const handleOpenFile = (fieldId) => () => {
@@ -41,6 +43,7 @@ const App = () => {
     const initialState = () => {
         setTextarea("")
         setTitle("")
+        //setFiles({})
         setid(v4())
     }
 
@@ -50,32 +53,31 @@ const App = () => {
     }
 
     const handleSave = () => {
-        localStorage.setItem(id, JSON.stringify({title: title || "Sem título", content: textarea } ))
+
+        console.log("Ollyver ", files)
+
+        const arquivos = {
+            ...files,
+            [id] : {
+                title: title || "Sem título",
+                content: textarea
+            }
+        }
+        localStorage.setItem('markdown-editor', JSON.stringify(arquivos ))
+        setFiles(arquivos)
+
         getFiles();
     }
 
     const handleRemove = () => {
-        localStorage.removeItem(id)
-
-/*      let files = Object.keys(files).reduce((acc, fieldId)=>{
-            return fieldId === id ? acc : {
-                ...acc,
-                [fieldId] : files[fieldId]
-            }
-        }, {})
-
-        const {[id]: _id, ...files} = files
-        const {[id]: id, ...files} = files
- */
-
+        localStorage.setItem('markdown-editor', JSON.stringify(files))
         delete files[id]
-
         createNew()
     }
 
     const handleCreate = () => {
         //localStorage.setItem(id, textarea)
-        localStorage.setItem(id, JSON.stringify({title: title, content: textarea } ))
+        //localStorage.setItem(id, JSON.stringify({title: title, content: textarea } ))
         createNew()
     }
 
@@ -89,7 +91,6 @@ const App = () => {
         }
     });
 
-    console.log("Ollyver ", files[id])
 
     return (
         <div className="container">
